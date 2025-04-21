@@ -1,0 +1,42 @@
+// Define the 7-segment pins
+int segmentPins[] = {2, 3, 4, 5, 6, 7, 8}; // A, B, C, D, E, F, G
+
+// Segment patterns for digits 0-9
+byte digits[10] = {
+  B1111110,  // 0
+  B0110000,  // 1
+  B1101101,  // 2
+  B1111001,  // 3
+  B0110011,  // 4
+  B1011011,  // 5
+  B1011111,  // 6
+  B1110000,  // 7
+  B1111111,  // 8
+  B1111011   // 9
+};
+
+void setup() {
+  // Set segment pins as OUTPUT
+  for (int i = 0; i < 7; i++) {
+    pinMode(segmentPins[i], OUTPUT);
+  }
+}
+
+void loop() {
+  // Display digits 0-9 one after the other
+  for (int i = 0; i < 10; i++) {
+    displayDigit(i);
+    delay(1000); // Display each digit for 1 second
+  }
+}
+
+// Function to display a digit on the 7-segment display
+void displayDigit(int num) {
+  for (int i = 0; i < 7; i++) {
+    if (digits[num] & (1 << i)) {
+      digitalWrite(segmentPins[i], HIGH); // Turn on the segment
+    } else {
+      digitalWrite(segmentPins[i], LOW); // Turn off the segment
+    }
+  }
+}

@@ -1,0 +1,32 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+#define irPin 2
+
+LiquidCrystal_I2C lcd(0x27, 16, 2); // Change 0x27 to 0x3F if your LCD has a different address
+
+void setup() {
+  pinMode(irPin, INPUT);
+  lcd.init();           // Initialize LCD
+  lcd.backlight();      // Turn on backlight
+  lcd.setCursor(0, 0);
+  lcd.print("IR Sensor Test");
+  delay(2000);
+  lcd.clear();
+}
+
+void loop() {
+  int irValue = digitalRead(irPin);
+
+  lcd.setCursor(0, 0);
+  lcd.print("IR Status:");
+
+  lcd.setCursor(0, 1);
+  if (irValue == LOW) {
+    lcd.print("Object Detected ");
+  } else {
+    lcd.print("No Object       ");
+  }
+
+  delay(500);
+}

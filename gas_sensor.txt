@@ -1,0 +1,36 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+#define GAS_SENSOR A0
+
+LiquidCrystal_I2C lcd(0x27, 16, 2); // Use 0x3F if 0x27 doesn't work
+
+void setup() {
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(0, 0);
+  lcd.print("Gas Monitor...");
+  delay(2000);
+  lcd.clear();
+}
+
+void loop() {
+  int gasValue = analogRead(GAS_SENSOR); // Range: ~0 to ~1023
+  int gasPercent = map(gasValue, 0, 1023, 0, 100); // Approximate % level
+
+  lcd.setCursor(0, 0);
+  if (gasPercent <= 30) {
+    lcd.print("Status: Safe     ");
+  } else if (gasPercent <= 60) {
+    lcd.print("Status: Warning  ");
+  } else {
+    lcd.print("Status: Danger   ");
+  }
+
+  lcd.setCursor(0, 1);
+  lcd.print("Gas Level: ");
+  lcd.print(gasPercent);
+  lcd.print(" %   "); // Clear leftover chars
+
+  delay(1000);
+}
